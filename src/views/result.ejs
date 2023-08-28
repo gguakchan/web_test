@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>result</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    <button type="button" class="btn btn-danger btn-sm" onClick='window.close()' style="float: right;">닫기</button>
+    <h7>result : <%= posts[0].result %></h7>
+    <p></p>
+    <% if (posts[0].result == "hela") { %>
+        <img src="hela.jpg" style="width:300px; height:300px;"/>
+        </br>
+        <h7>Hela 세포는 높은 증식 능력을 가진 암 세포로, 무한한 분열 능력으로 인해 연구에서 장기간 사용되며, 세포 주기 및 암의 생물학적 메커니즘을 이해하는 데 유용한 모델로 인정받고 있습니다. 이러한 특징은 세포 주기 조절과 종양 형성 등의 연구 분야에서 중요한 기여를 하고 있습니다.</h7>
+        <% }; %>
+    <% if (posts[0].result == "ht") { %>
+        <img src="ht.jpg" style="width:300px; height:300px;"/>
+        </br>
+        <h7>HT 세포는 Henrietta Lacks에서 유래된 암 세포로, 높은 증식 능력과 장기간의 생존 능력을 가지며, 세포 주기, 유전자 발현 및 암의 기작 연구 등 다양한 생물학적 연구 분야에서 활용되는 중요한 모델 세포입니다. 이로써 세포 생물학 및 의학 연구에서 통용되는 기준 모델로서 그 중요성을 갖고 있습니다.</h7>
+        <% }; %>
+    <% if (posts[0].result == "imr") { %>
+        <img src="imr.jpg" style="width:300px; height:300px;"/>
+        </br>
+        <h7>IMR 세포는 인간 대장암 조직에서 유래된 세포로, 항암제 효과 평가 및 암 세포 생물학 연구에 사용되며, 특히 대장암 관련 연구 분야에서 중요한 역할을 하는 세포 모델 중 하나입니다.</h7>
+        <% }; %>
+
+</body>
+</html>

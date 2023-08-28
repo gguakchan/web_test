@@ -1,12 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Image Server</title>
+    <title>index</title>
 </head>
 <body>
-    <form action="/" method="POST" enctype="multipart/form-data">
+    <p><b>사용 방법 및 주의점</b></p>
+    <p>1. 분류하고 싶은 세포 사진을 업로드 한다. '파일선택 -> Upload' (hela, ht, imr 만 가능)</p>
+    <p>2. '분석' 버튼을 누른다. (팝업창으로 넘어감)</p>
+    <p>3. 결과 보기 버튼을 누르고 기다린다.</p>
+    <p>4. 결과 보고 뭐 어떻게든 써먹어 보든지</p>
+
+    <p><I>* hela, ht, imr 사진 외에 다른 사진 넣어도 어떻게든 세가지중 하나로 분류해 냅니다. 딴 사진 넣지 마세요... <STRIKE>딴거 넣고 헛소리하면 때릴거임</STRIKE></I></p>
+    <p><I>** 보안 그딴거 신경 안쓰고 만든 웹입니다. 막 해킹하려고 하지 마세요.</I></p>
+    <p><I>*** 본 개발자 생명 몰라요.. 생명 관련 내용 틀렸을 가능성이 있습니다. CELL한테 문의하세요.</I></p>
+
+    </br>
+
+    <form action="/index" method="POST" enctype="multipart/form-data">
         <input type="file" name="myFile" />
         <button type="submit">Upload</button>
     </form>
+    </br>
+    <button onclick="window.open('../classification', 'classification', 'width=400, height=500, left=100, top=50');" type="button"%>">분석</button>
 </body>
 </html>

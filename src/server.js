@@ -1,7 +1,3 @@
-//최종 수정 일시 : 2023.08.27 
-//최종 수정자 : 정해찬
-//수정할 것 : 
-
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -9,10 +5,14 @@ const res = require("express/lib/response");
 const session = require("express-session");
 const { render } = require("express/lib/response");
 const { stringify } = require("nodemon/lib/utils");
+const MongoClient = require("mongodb").MongoClient;
 
 const path = require('path');
 const multer = require('multer')
 const uuid4 = require('uuid4')
+
+const fsExtra = require('fs-extra')
+fsExtra.emptyDirSync("files")
 
 require("dotenv").config();
 
@@ -40,24 +40,65 @@ const upload = multer({
   
 const uploadMiddleware = upload.single("myFile");
   
-app.post("/", uploadMiddleware, (call, answer) => {
-	console.log(call.file);
-	answer.send("<script>alert('업로드 완료'); window.location.replace('/')</script>");
-  });
-  
-app.get("/", function (call, answer) {
-	answer.render("index.ejs");
-});
+var db;
+MongoClient.connect(process.env.DB_URL, function (error, client) {
+	if (error) return console.log(error);
 
-app.get('/classification', (call, answer) => {
-	const spawn = require('child_process').spawn;
-	const result_01 = spawn('python', ['classification.py'], );
-	result_01.stdout.on('data', (result)=>{
-		console.log(result.toString());
+	db = client.db("cell_classification");
+
+	app.get("/", function (call, answer) {
+		answer.render("login.ejs");
 	});
-    answer.render("classification.ejs");
-});
 
-app.listen(process.env.PORT, function () {
-	console.log("listening on 8080");
+	app.post("/", function (call, answer) {
+		db.collection("user").insertOne(
+			{
+				name : call.body.ans
+			},
+			function (error, result) {
+				if (error) {
+					console.log("연결 오류");
+					answer.send("<script>alert('서버 연결에 실패했습니다.'); window.location.replace('/')</script>");
+				} else {
+					answer.send("<script>alert('제출했당!'); window.location.replace('/index')</script>");
+				}
+			}
+		);
+	});
+
+	app.post("/index", uploadMiddleware, (call, answer) => {
+		console.log(call.file);
+		answer.send("<script>alert('업로드 완료'); window.location.replace('/index')</script>");
+	  });
+  
+	app.get("/index", function (call, answer) {
+		answer.render("index.ejs");
+	});
+	
+	app.get('/classification', (call, answer) => {
+		const spawn = require('child_process').spawn;
+		const result_01 = spawn('python', ['classification.py'], );
+		result_01.stdout.on('data', (result)=>{
+			console.log(result.toString());
+		});
+		answer.render("classification.ejs");
+	});
+
+	app.get('/result', (call, answer) => {
+		setTimeout(function() {
+			db.collection("classification")
+			.find()
+			.sort({ _id: -1 })
+			.toArray(function (error, result) {
+				answer.render("result.ejs", {
+					posts: result,
+				});
+			});;
+		  }, 5000);
+	});
+
+	app.listen(process.env.PORT, function () {
+		console.log("listening on 8000");
+	});
+
 });

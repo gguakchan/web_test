@@ -6,6 +6,9 @@ from torchvision import datasets, models, transforms
 from PIL import Image
 import os
 
+import pymongo
+from pymongo import MongoClient
+
 model = torch.load('model.pt')
 
 transforms_test = transforms.Compose([
@@ -39,6 +42,15 @@ def getValue():
         outputs = model(image)
         _, preds = torch.max(outputs, 1)
         print('result: ' + class_names[preds[0]])
+    
+        cluster = MongoClient("mongodb+srv://wonomedb:wonomedb123@wonome.3buk7.mongodb.net/")
+
+        db = cluster["cell_classification"]
+        collection = db["classification"]
+
+        respond = class_names[preds[0]]
+        post = {"result": respond}
+        collection.insert_one(post)
     
     dir = './files'
     for f in os.listdir(dir):
